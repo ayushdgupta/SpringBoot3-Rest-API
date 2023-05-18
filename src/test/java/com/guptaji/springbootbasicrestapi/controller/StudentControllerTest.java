@@ -163,7 +163,7 @@ class StudentControllerTest {
   }
 
   @Test
-  @DisplayName("Testing Get Student API By Roll No")
+  @DisplayName("Testing Delete Student API By Roll No")
   void deleteStudent() throws Exception {
 
     // Here we will test the negative scenario
