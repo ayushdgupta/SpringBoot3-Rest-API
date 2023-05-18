@@ -11,8 +11,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.guptaji.springbootbasicrestapi.entity.Student;
 import com.guptaji.springbootbasicrestapi.service.StudentServiceImpl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
@@ -40,10 +42,13 @@ class StudentControllerTest {
   @Autowired private ObjectMapper objectMapper;
 
   private Student student;
+  private List<Student> studentList;
 
   @BeforeEach
   public void init() {
     student = new Student("Naruto", "Uzumaki", "Hokage", 7);
+    studentList = new ArrayList<>();
+    studentList.add(student);
   }
 
   @Test
@@ -89,28 +94,87 @@ class StudentControllerTest {
     response
         .andDo(print())
         .andExpect(status().isCreated())
+        .andExpect(jsonPath("$", notNullValue()))
         .andExpect(jsonPath("$.firstName", is(student.getFirstName())))
         .andExpect(jsonPath("$.lastName", is(student.getLastName())))
-        .andExpect(jsonPath("$.className", is(student.getClassName())));
+        .andExpect(jsonPath("$.className", is(student.getClassName())))
+        .andExpect(jsonPath("$.rollNo").value(7));
   }
 
   @Test
-  @Disabled
-  void fetchAllStudents() {}
+  @DisplayName("Testing Fetch All Student API")
+  void fetchAllStudents() throws Exception {
+    given(studentService.getAllStudentData()).willReturn(studentList);
+
+    ResultActions response = mockMvc.perform(get("/student"));
+
+    response
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.size()").value(studentList.size()))
+        .andExpect(jsonPath("$[0].firstName", is(studentList.get(0).getFirstName())));
+  }
 
   @Test
-  @Disabled
-  void getStudentByRollNo() {}
+  @DisplayName("Testing Get Student API By Roll No")
+  void getStudentByRollNo() throws Exception {
+    given(studentService.getStudentByRoll(ArgumentMatchers.any(Integer.class))).willReturn(student);
+
+    ResultActions response = mockMvc.perform(get("/student/{rollNo}", student.getRollNo()));
+
+    response
+        .andDo(print())
+        .andExpect(status().isFound())
+        .andExpect(jsonPath("$", notNullValue()))
+        .andExpect(jsonPath("$.firstName", is(student.getFirstName())))
+        .andExpect(jsonPath("$.lastName").value(student.getLastName()));
+  }
 
   @Test
-  @Disabled
-  void getStudentByRollNoUsingQueryVariables() {}
+  @DisplayName("Testing Get Student API By Roll No Using Query Variable")
+  void getStudentByRollNoUsingQueryVariables() throws Exception {
+    given(studentService.getStudentByRoll(ArgumentMatchers.any(Integer.class))).willReturn(student);
+
+    ResultActions response = mockMvc.perform(get("/student/{rollNo}", student.getRollNo()));
+
+    response
+        .andDo(print())
+        .andExpect(status().isFound())
+        .andExpect(jsonPath("$.firstName", is(student.getFirstName())))
+        .andExpect(jsonPath("$.lastName").value(student.getLastName()));
+  }
 
   @Test
-  @Disabled
-  void updateStudent() {}
+  @DisplayName("Testing Update Student API")
+  void updateStudent() throws Exception {
+    given(studentService.updateStudentData(ArgumentMatchers.any(Student.class))).willReturn(true);
+
+    ResultActions response =
+        mockMvc.perform(
+            put("/student")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(student)));
+
+    response
+        .andDo(print())
+        .andExpect(jsonPath("$", notNullValue()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", is("Done dana done done")));
+  }
 
   @Test
-  @Disabled
-  void deleteStudent() {}
+  @DisplayName("Testing Get Student API By Roll No")
+  void deleteStudent() throws Exception {
+
+    // Here we will test the negative scenario
+    given(studentService.deleteStudentData(ArgumentMatchers.any(Integer.class))).willReturn(false);
+
+    ResultActions response = mockMvc.perform(delete("/student/{rollNo}", student.getRollNo()));
+
+    response
+        .andDo(print())
+        .andExpect(jsonPath("$", notNullValue()))
+        .andExpect(status().isInternalServerError())
+        .andExpect(jsonPath("$").value("Some error occured while deleting the data"));
+  }
 }
