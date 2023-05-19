@@ -4,11 +4,14 @@ be able to do all CRUD Operations.
 2-> we have also created the JUnit of all layers. 
     a> Please refer below link for Controller Testing Concepts -- https://spring.io/guides/gs/testing-web/    
     b> Another method to test the controller -- https://howtodoinjava.com/spring-boot2/testing/rest-controller-unit-test-example/
+    c> For Service layer testing refer -- https://www.javaguides.net/2022/03/spring-boot-unit-testing-service-layer.html
+    d> For Mock and InjectMock -- https://howtodoinjava.com/spring-boot2/testing/spring-boot-mockito-junit-example/
 
 3-> In this code we are also using spotless plugin. to add spotless plugin follow below steps -
 
 plugins{
-id 'com.diffplug.spotless' version '6.16.0'
+id 'com.diffplug.spotless' ver
+sion '6.16.0'
 }
 
 spotless {

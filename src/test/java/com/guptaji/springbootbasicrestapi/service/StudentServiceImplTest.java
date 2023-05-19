@@ -2,17 +2,19 @@ package com.guptaji.springbootbasicrestapi.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willDoNothing;
 
 import com.guptaji.springbootbasicrestapi.entity.Student;
 import com.guptaji.springbootbasicrestapi.repository.StudentRepo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -46,18 +48,48 @@ class StudentServiceImplTest {
   }
 
   @Test
-  @Disabled
-  void addNewStudentData() {}
+  void addNewStudentData() {
+    given(studentRepo.save(ArgumentMatchers.any(Student.class))).willReturn(student);
+
+    Student newStudentData = studentService.addNewStudentData(student);
+
+    assertNotNull(newStudentData);
+    assertEquals(newStudentData.getRollNo(), student.getRollNo());
+    assertEquals(student.getFirstName(), newStudentData.getFirstName());
+  }
 
   @Test
-  @Disabled
-  void getStudentByRoll() {}
+  void getStudentByRoll() {
+    given(studentRepo.findById(ArgumentMatchers.any(Integer.class)))
+        .willReturn(Optional.of(student));
+
+    Student studentData = studentService.getStudentByRoll(1);
+
+    assertNotNull(studentData);
+    assertEquals(studentData.getRollNo(), student.getRollNo());
+    assertEquals(student.getFirstName(), studentData.getFirstName());
+  }
 
   @Test
-  @Disabled
-  void updateStudentData() {}
+  void updateStudentData() {
+    given(studentRepo.save(ArgumentMatchers.any(Student.class))).willReturn(student);
+
+    boolean updatedStudentData = studentService.updateStudentData(student);
+
+    //    assertEquals(true, updatedStudentData);
+    assertTrue(updatedStudentData);
+  }
 
   @Test
-  @Disabled
-  void deleteStudentData() {}
+  void deleteStudentData() {
+    // Here we can see that studentRepo.deleteById() is not returning anything in our original
+    // method, so it's mocking can be done with the help of willDoNothing().
+    willDoNothing().given(studentRepo).deleteById(ArgumentMatchers.any(Integer.class));
+
+    given(studentRepo.findById(ArgumentMatchers.any(Integer.class))).willReturn(Optional.empty());
+
+    boolean result = studentService.deleteStudentData(1);
+
+    assertTrue(result);
+  }
 }
