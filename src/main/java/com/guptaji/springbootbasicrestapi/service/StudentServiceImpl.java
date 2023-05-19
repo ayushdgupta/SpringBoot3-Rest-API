@@ -27,29 +27,33 @@ public class StudentServiceImpl implements StudentService {
   @Override
   public Student getStudentByRoll(int roll) {
     Optional<Student> studentOptional = studentRepo.findById(roll);
-    if (studentOptional.isPresent()) {
-      return studentOptional.get();
-    } else {
-      return null;
-    }
+
+    // M1->
+//    if (studentOptional.isPresent()) {
+//      return studentOptional.get();
+//    } else {
+//      return null;
+//    }
+    return studentOptional.orElse(null);
   }
 
   @Override
   public Boolean updateStudentData(Student student) {
     Student studentData = studentRepo.save(student);
-    if (studentData != null) {
-      return true;
-    }
-    return false;
+    return true;
   }
 
   @Override
   public Boolean deleteStudentData(int roll) {
     studentRepo.deleteById(roll);
     Optional<Student> studentDataById = studentRepo.findById(roll);
-    if (studentDataById.isPresent()) {
-      return false;
-    }
-    return true;
+
+    // M1->
+//    if (studentDataById.isPresent()) {
+//      return false;
+//    }
+//    return true;
+
+    return studentDataById.isEmpty();
   }
 }
