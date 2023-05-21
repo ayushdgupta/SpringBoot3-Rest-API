@@ -29,11 +29,11 @@ public class StudentServiceImpl implements StudentService {
     Optional<Student> studentOptional = studentRepo.findById(roll);
 
     // M1->
-//    if (studentOptional.isPresent()) {
-//      return studentOptional.get();
-//    } else {
-//      return null;
-//    }
+    //    if (studentOptional.isPresent()) {
+    //      return studentOptional.get();
+    //    } else {
+    //      return null;
+    //    }
     return studentOptional.orElse(null);
   }
 
@@ -49,10 +49,10 @@ public class StudentServiceImpl implements StudentService {
     Optional<Student> studentDataById = studentRepo.findById(roll);
 
     // M1->
-//    if (studentDataById.isPresent()) {
-//      return false;
-//    }
-//    return true;
+    //    if (studentDataById.isPresent()) {
+    //      return false;
+    //    }
+    //    return true;
 
     return studentDataById.isEmpty();
   }
