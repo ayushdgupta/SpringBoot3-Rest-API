@@ -56,4 +56,19 @@ public class StudentServiceImpl implements StudentService {
 
     return studentDataById.isEmpty();
   }
+
+  @Override
+  public List<Student> fetchAllStudentUsingJPQL() {
+    return studentRepo.getAllStudentsUsingJPQL();
+  }
+
+  @Override
+  public List<Student> fetchAllStudentUsingFirstAndLastName(String firstName, String lastName) {
+    return studentRepo.getAllStudentsUsingFirstAndLastName(firstName, lastName);
+  }
+
+  @Override
+  public List<Student> fetchAllStudentUsingNative() {
+    return studentRepo.getAllStudentsUsingNative();
+  }
 }

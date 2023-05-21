@@ -94,4 +94,35 @@ public class StudentController {
           .body("Some error occured while deleting the data");
     }
   }
+
+  @GetMapping("/retrieveAllUsingJPQL")
+  public ResponseEntity<?> retrieveAllStudentsUsingJPQL() {
+    LOG.info("retrieveAllStudentsUsingJPQL API Hit");
+    List<Student> studentList = studentService.fetchAllStudentUsingJPQL();
+    if (!studentList.isEmpty()) {
+      return ResponseEntity.status(HttpStatus.OK).body(studentList);
+    }
+    return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Database is empty right now");
+  }
+
+  @GetMapping("/retrieveAllUsingFirstAndLastName")
+  public ResponseEntity<?> retrieveAllStudentsUsingFirstAndLastName(
+      @RequestParam("firstName") String fName, @RequestParam("lastName") String lName) {
+    LOG.info("retrieveAllStudentsUsingFirstAndLastName API Hit");
+    List<Student> studentList = studentService.fetchAllStudentUsingFirstAndLastName(fName, lName);
+    if (!studentList.isEmpty()) {
+      return ResponseEntity.status(HttpStatus.OK).body(studentList);
+    }
+    return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Database is empty right now");
+  }
+
+  @GetMapping("/retrieveAllUsingNative")
+  public ResponseEntity<?> retrieveAllStudentsUsingNative() {
+    LOG.info("retrieveAllStudentsUsingNative API Hit");
+    List<Student> studentList = studentService.fetchAllStudentUsingNative();
+    if (!studentList.isEmpty()) {
+      return ResponseEntity.status(HttpStatus.OK).body(studentList);
+    }
+    return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Database is empty right now");
+  }
 }

@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.guptaji.springbootbasicrestapi.entity.Student;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,7 +27,6 @@ class StudentRepoTest {
 
   private Student student;
   private Student studentTwo;
-  private List<Student> studentList;
 
   @Autowired private DataSource dataSource;
   @Autowired private JdbcTemplate jdbcTemplate;
@@ -39,9 +37,6 @@ class StudentRepoTest {
   public void init() {
     student = new Student("Naruto", "Uzumaki", "Hokage", 7);
     studentTwo = new Student("Sasuke", "Uchiha", "Shadow Hokage", 8);
-    studentList = new ArrayList<>();
-    studentList.add(student);
-    studentList.add(studentTwo);
   }
 
   @Test

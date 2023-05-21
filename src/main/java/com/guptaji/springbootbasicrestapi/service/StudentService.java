@@ -15,4 +15,10 @@ public interface StudentService {
   Boolean updateStudentData(Student student);
 
   Boolean deleteStudentData(int roll);
+
+  List<Student> fetchAllStudentUsingJPQL();
+
+  List<Student> fetchAllStudentUsingFirstAndLastName(String firstName, String lastName);
+
+  List<Student> fetchAllStudentUsingNative();
 }
