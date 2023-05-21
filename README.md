@@ -16,7 +16,7 @@ be able to do all CRUD Operations.
             testImplementation 'com.h2database:h2'
 
 3-> In this code we are also using spotless plugin. to add spotless plugin follow below steps -
-
+```
 plugins{
 id 'com.diffplug.spotless' ver
 sion '6.16.0'
@@ -31,6 +31,7 @@ removeUnusedImports()
 }
 
 compileJava.dependsOn 'spotlessApply'
+```
 
 4-> for logging purpose we are using apache.log4j -
 implementation 'org.apache.logging.log4j:log4j-api:2.20.0'
