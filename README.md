@@ -34,8 +34,10 @@ compileJava.dependsOn 'spotlessApply'
 ```
 
 4-> for logging purpose we are using apache.log4j -
+```
 implementation 'org.apache.logging.log4j:log4j-api:2.20.0'
 implementation 'org.apache.logging.log4j:log4j-core:2.20.0'
+```
 
 5-> Here we are using swagger UI, so to add swagger UI functionality follow below steps -
 
