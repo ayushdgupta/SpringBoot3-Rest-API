@@ -21,4 +21,10 @@ public interface StudentService {
   List<Student> fetchAllStudentUsingFirstAndLastName(String firstName, String lastName);
 
   List<Student> fetchAllStudentUsingNative();
+
+  List<Student> updateStudentLastName(String firstName, String lastName);
+
+  List<Student> findStudentsByFirstName(String firstName);
+
+  List<Student> findStudentsByFirstAndLastName(String firstName, String lastName);
 }

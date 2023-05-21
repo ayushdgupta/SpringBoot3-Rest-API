@@ -5,9 +5,11 @@ import com.guptaji.springbootbasicrestapi.entity.Student;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 /*
    Here @Repository annotation is not required because we are using JpaRepository and JpaRepository's implementation
@@ -30,6 +32,16 @@ public interface StudentRepo extends JpaRepository<Student, Integer> {
   public List<Student> getAllStudentsUsingFirstAndLastName(
       @Param("fName") String firstName, @Param("lName") String lastName);
 
+  // A JPQL Query to Update the student data
+  // If we are writing custom JPQL Queries for Any manipulation of data like update, delete then we
+  // need
+  // to use two annotations @Transactional, @Modifying, it'll allow spring to do updates.
+  @Transactional
+  @Modifying
+  @Query("update Student st set st.lastName = :lName where st.firstName = :fName")
+  public void updateLastNameUsingFirstByJPQL(
+      @Param("fName") String firstName, @Param("lName") String lastName);
+
   // Native Queries : When we define query as native, it means it is specific to a particular
   // database.
   // i.e. if we are using postgre db then in the query we are allowed to use Postgre DB specific
@@ -38,4 +50,10 @@ public interface StudentRepo extends JpaRepository<Student, Integer> {
   // A Native query to fetch all students from DB
   @Query(value = "select * from Student", nativeQuery = true)
   public List<Student> getAllStudentsUsingNative();
+
+  // Custom Finder Methods / Derived Query Methods
+
+  public List<Student> findByFirstName(String fName);
+
+  public List<Student> findByFirstNameOrLastName(String fName, String lName);
 }

@@ -50,3 +50,8 @@ http://localhost:8080/swagger-ui/index.html
 6-> @SpringBootApplication -- https://learnjava.co.in/the-springbootapplication-annotation-explained/
 
 7-> For Dependency Injection -- https://reflectoring.io/constructor-injection/#:~:text=for%20that%20matter
+
+8-> For Custome Finder methods keyword link --
+https://docs.spring.io/spring-data/jpa/docs/current-SNAPSHOT/reference/html/#reference
+
+https://javatute.com/jpa/how-to-write-custom-method-in-repository-in-spring-data-jpa/

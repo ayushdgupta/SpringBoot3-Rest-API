@@ -125,4 +125,36 @@ public class StudentController {
     }
     return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Database is empty right now");
   }
+
+  @PutMapping("/updateLastNameUsingFirstName")
+  public ResponseEntity<?> updateAllStudentsLastNameUsingFirst(
+      @RequestParam("firstName") String fName, @RequestParam("lastName") String lName) {
+    LOG.info("updateAllStudentsLastNameUsingFirst API Hit");
+    List<Student> studentList = studentService.updateStudentLastName(fName, lName);
+    if (!studentList.isEmpty()) {
+      return ResponseEntity.status(HttpStatus.OK).body(studentList);
+    }
+    return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Database is empty right now");
+  }
+
+  @GetMapping("/retrieveAllStudentsByFirstName/{firstName}")
+  public ResponseEntity<?> retrieveAllStudentsByFirstName(@PathVariable("firstName") String fName) {
+    LOG.info("retrieveAllStudentsByFirstName API Hit");
+    List<Student> studentList = studentService.findStudentsByFirstName(fName);
+    if (!studentList.isEmpty()) {
+      return ResponseEntity.status(HttpStatus.OK).body(studentList);
+    }
+    return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Database is empty right now");
+  }
+
+  @GetMapping("/retrieveAllStudentsByFirstAndLastName/{firstName}/{lastName}")
+  public ResponseEntity<?> retrieveAllStudentsByFirstAndLastName(
+      @PathVariable("firstName") String fName, @PathVariable("lastName") String lName) {
+    LOG.info("retrieveAllStudentsByFirstAndLastName API Hit");
+    List<Student> studentList = studentService.fetchAllStudentUsingFirstAndLastName(fName, lName);
+    if (!studentList.isEmpty()) {
+      return ResponseEntity.status(HttpStatus.OK).body(studentList);
+    }
+    return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Database is empty right now");
+  }
 }

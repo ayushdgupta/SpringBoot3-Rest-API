@@ -71,4 +71,20 @@ public class StudentServiceImpl implements StudentService {
   public List<Student> fetchAllStudentUsingNative() {
     return studentRepo.getAllStudentsUsingNative();
   }
+
+  @Override
+  public List<Student> updateStudentLastName(String firstName, String lastName) {
+    studentRepo.updateLastNameUsingFirstByJPQL(firstName, lastName);
+    return studentRepo.getAllStudentsUsingJPQL();
+  }
+
+  @Override
+  public List<Student> findStudentsByFirstName(String firstName) {
+    return studentRepo.findByFirstName(firstName);
+  }
+
+  @Override
+  public List<Student> findStudentsByFirstAndLastName(String firstName, String lastName) {
+    return studentRepo.findByFirstNameOrLastName(firstName, lastName);
+  }
 }
