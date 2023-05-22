@@ -103,6 +103,8 @@ class StudentRepoTest {
 
   // This test case was not working directly due to some spring internal issues but when we add
   // 'clearAutomatically = true' in @Modifying annotation in actual method then this works fine.
+  // Issue was that even after updating the lastName DB was automatically picking the older last name
+  // but in actual working it was working fine, In JUnit only it was creating issues.
   @Test
   void updateLastNameUsingFirstByJPQL() {
     Student savedStudentData = studentRepo.save(student);

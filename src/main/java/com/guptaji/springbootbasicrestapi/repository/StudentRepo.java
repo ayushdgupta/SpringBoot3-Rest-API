@@ -37,8 +37,7 @@ public interface StudentRepo extends JpaRepository<Student, Integer> {
   // need
   // to use two annotations @Transactional, @Modifying, it'll allow spring to do updates.
   // Here we add 'clearAutomatically = true' in @Modifying because it's JUnit were failing before
-  // adding it.
-  // due to some spring's internal issue.
+  // adding it due to some spring's internal issue.
   @Transactional
   @Modifying(clearAutomatically = true)
   @Query("update Student st set st.lastName = :lName where st.firstName = :fName")
