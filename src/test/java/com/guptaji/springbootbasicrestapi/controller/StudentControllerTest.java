@@ -135,7 +135,10 @@ class StudentControllerTest {
   void getStudentByRollNoUsingQueryVariables() throws Exception {
     given(studentService.getStudentByRoll(ArgumentMatchers.any(Integer.class))).willReturn(student);
 
-    ResultActions response = mockMvc.perform(get("/student/{rollNo}", student.getRollNo()));
+    ResultActions response =
+        mockMvc.perform(
+            get("/student/queryvariableUsage")
+                .param("roll", Integer.toString(student.getRollNo())));
 
     response
         .andDo(print())
@@ -176,5 +179,107 @@ class StudentControllerTest {
         .andExpect(jsonPath("$", notNullValue()))
         .andExpect(status().isInternalServerError())
         .andExpect(jsonPath("$").value("Some error occured while deleting the data"));
+  }
+
+  @Test
+  void retrieveAllStudentsUsingJPQL() throws Exception {
+    given(studentService.fetchAllStudentUsingJPQL()).willReturn(studentList);
+
+    ResultActions response = mockMvc.perform(get("/student/retrieveAllUsingJPQL"));
+
+    response
+        .andDo(print())
+        .andExpect(jsonPath("$", notNullValue()))
+        .andExpect(jsonPath("$.size()").value(1));
+  }
+
+  @Test
+  void retrieveAllStudentsUsingFirstAndLastName() throws Exception {
+    given(
+            studentService.fetchAllStudentUsingFirstAndLastName(
+                ArgumentMatchers.any(String.class), ArgumentMatchers.any(String.class)))
+        .willReturn(studentList);
+
+    ResultActions response =
+        mockMvc.perform(
+            get("/student/retrieveAllUsingFirstAndLastName")
+                .param("firstName", student.getFirstName())
+                .param("lastName", student.getLastName()));
+
+    response
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", notNullValue()))
+        .andExpect(jsonPath("$.size()").value(1));
+  }
+
+  @Test
+  void retrieveAllStudentsUsingNative() throws Exception {
+    given(studentService.fetchAllStudentUsingNative()).willReturn(studentList);
+
+    ResultActions response = mockMvc.perform(get("/student/retrieveAllUsingNative"));
+
+    response
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", notNullValue()))
+        .andExpect(jsonPath("$.size()", is(studentList.size())));
+  }
+
+  @Test
+  void updateAllStudentsLastNameUsingFirst() throws Exception {
+    String LAST_NAME = "Namikaze";
+
+    // Here when we are trying to provide one value as argumentMatcher.any() and one String value
+    // directly then it throws an error that either provide both values raw or both values as
+    // argumentMatcher.
+    Student updatedStudentData =
+        new Student(student.getFirstName(), LAST_NAME, student.getClassName(), student.getRollNo());
+    given(
+            studentService.updateStudentLastName(
+                ArgumentMatchers.any(String.class), ArgumentMatchers.eq(LAST_NAME)))
+        .willReturn(List.of(updatedStudentData));
+
+    ResultActions response =
+        mockMvc.perform(
+            put("/student/updateLastNameUsingFirstName")
+                .param("firstName", student.getFirstName())
+                .param("lastName", LAST_NAME));
+
+    response
+        .andDo(print())
+        .andExpect(jsonPath("$", notNullValue()))
+        .andExpect(jsonPath("$[0].lastName", is(updatedStudentData.getLastName())));
+  }
+
+  @Test
+  void retrieveAllStudentsByFirstName() throws Exception {
+    given(studentService.findStudentsByFirstName(ArgumentMatchers.any(String.class)))
+        .willReturn(studentList);
+
+    ResultActions response =
+        mockMvc.perform(get("/student/retrieveAllStudentsByFirstName/{firstName}", "Naruto"));
+
+    response
+        .andDo(print())
+        .andExpect(jsonPath("$", notNullValue()))
+        .andExpect(jsonPath("$[0].rollNo").value(studentList.get(0).getRollNo()));
+  }
+
+  @Test
+  void retrieveAllStudentsByFirstAndLastName() throws Exception {
+    given(studentService.fetchAllStudentUsingFirstAndLastName("Naruto", "Uzumaki"))
+        .willReturn(studentList);
+
+    ResultActions response =
+        mockMvc
+            .perform(
+                get(
+                    "/student/retrieveAllStudentsByFirstAndLastName/{firstName}/{lastName}",
+                    "Naruto",
+                    "Uzumaki"))
+            .andDo(print())
+            .andExpect(jsonPath("$.size()", is(studentList.size())))
+            .andExpect(jsonPath("$[0].className").value(studentList.get(0).getClassName()));
   }
 }
