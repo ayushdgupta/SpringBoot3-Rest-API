@@ -36,8 +36,11 @@ public interface StudentRepo extends JpaRepository<Student, Integer> {
   // If we are writing custom JPQL Queries for Any manipulation of data like update, delete then we
   // need
   // to use two annotations @Transactional, @Modifying, it'll allow spring to do updates.
+  // Here we add 'clearAutomatically = true' in @Modifying because it's JUnit were failing before
+  // adding it.
+  // due to some spring's internal issue.
   @Transactional
-  @Modifying
+  @Modifying(clearAutomatically = true)
   @Query("update Student st set st.lastName = :lName where st.firstName = :fName")
   public void updateLastNameUsingFirstByJPQL(
       @Param("fName") String firstName, @Param("lName") String lastName);

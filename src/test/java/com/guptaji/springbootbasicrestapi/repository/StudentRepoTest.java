@@ -77,4 +77,74 @@ class StudentRepoTest {
 
     assertTrue(studentOptional.isEmpty());
   }
+
+  @Test
+  void getAllStudentsUsingJPQL() {
+    Student savedStudentData = studentRepo.save(student);
+    Student savedStudentDataTwo = studentRepo.save(studentTwo);
+
+    List<Student> studentListData = studentRepo.getAllStudentsUsingJPQL();
+
+    assertNotNull(studentListData);
+    assertEquals(2, studentListData.size());
+  }
+
+  @Test
+  void getAllStudentsUsingFirstAndLastName() {
+    Student savedStudentDataTwo = studentRepo.save(studentTwo);
+
+    List<Student> studentListData =
+        studentRepo.getAllStudentsUsingFirstAndLastName(
+            studentTwo.getFirstName(), studentTwo.getLastName());
+
+    assertNotNull(studentListData);
+    assertEquals(1, studentListData.size());
+  }
+
+  // This test case was not working directly due to some spring internal issues but when we add
+  // 'clearAutomatically = true' in @Modifying annotation in actual method then this works fine.
+  @Test
+  void updateLastNameUsingFirstByJPQL() {
+    Student savedStudentData = studentRepo.save(student);
+
+    studentRepo.updateLastNameUsingFirstByJPQL(student.getFirstName(), studentTwo.getLastName());
+
+    List<Student> studentListData = studentRepo.findByFirstName(student.getFirstName());
+
+    assertEquals(1, studentListData.size());
+    assertEquals(studentTwo.getLastName(), studentListData.get(0).getLastName());
+  }
+
+  @Test
+  void getAllStudentsUsingNative() {
+
+    Student savedStudentData = studentRepo.save(student);
+    Student savedStudentDataTwo = studentRepo.save(studentTwo);
+
+    List<Student> studentListData = studentRepo.getAllStudentsUsingNative();
+
+    assertNotNull(studentListData);
+    assertEquals(2, studentListData.size());
+  }
+
+  @Test
+  void findByFirstName() {
+    Student savedStudentDataTwo = studentRepo.save(studentTwo);
+
+    List<Student> studentListData = studentRepo.findByFirstName(studentTwo.getFirstName());
+
+    assertNotNull(studentListData);
+    assertEquals(1, studentListData.size());
+  }
+
+  @Test
+  void findByFirstNameOrLastName() {
+    Student savedStudentDataTwo = studentRepo.save(studentTwo);
+
+    List<Student> studentListData =
+        studentRepo.findByFirstNameOrLastName(studentTwo.getFirstName(), "ABCD");
+
+    assertNotNull(studentListData);
+    assertEquals(1, studentListData.size());
+  }
 }
