@@ -78,8 +78,8 @@ public class StudentController {
     if (result) {
       return ResponseEntity.status(HttpStatus.OK).body("Done dana done done");
     } else {
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-          .body("Some error occured while updating the data");
+      return new ResponseEntity<>(
+          "Some error occured while updating the data", HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -90,8 +90,8 @@ public class StudentController {
     if (result) {
       return ResponseEntity.status(HttpStatus.OK).body("Done dana done done");
     } else {
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-          .body("Some error occured while deleting the data");
+      return new ResponseEntity<>(
+          "Some error occured while deleting the data", HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -102,7 +102,7 @@ public class StudentController {
     if (!studentList.isEmpty()) {
       return ResponseEntity.status(HttpStatus.OK).body(studentList);
     }
-    return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Database is empty right now");
+    return new ResponseEntity<>("Database is empty right now", HttpStatus.NO_CONTENT);
   }
 
   @GetMapping("/retrieveAllUsingFirstAndLastName")
@@ -113,7 +113,9 @@ public class StudentController {
     if (!studentList.isEmpty()) {
       return ResponseEntity.status(HttpStatus.OK).body(studentList);
     }
-    return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Database is empty right now");
+    return new ResponseEntity<>(
+        "No data corresponding to first and last name " + fName + ", " + lName,
+        HttpStatus.NOT_FOUND);
   }
 
   @GetMapping("/retrieveAllUsingNative")
@@ -123,7 +125,7 @@ public class StudentController {
     if (!studentList.isEmpty()) {
       return ResponseEntity.status(HttpStatus.OK).body(studentList);
     }
-    return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Database is empty right now");
+    return new ResponseEntity<>("Database is empty right now", HttpStatus.NO_CONTENT);
   }
 
   @PutMapping("/updateLastNameUsingFirstName")
@@ -134,7 +136,7 @@ public class StudentController {
     if (!studentList.isEmpty()) {
       return ResponseEntity.status(HttpStatus.OK).body(studentList);
     }
-    return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Database is empty right now");
+    return new ResponseEntity<>("No data corresponding to name " + fName, HttpStatus.NOT_FOUND);
   }
 
   @GetMapping("/retrieveAllStudentsByFirstName/{firstName}")
