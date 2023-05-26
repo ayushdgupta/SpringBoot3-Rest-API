@@ -144,7 +144,11 @@ public class StudentController {
     if (!studentList.isEmpty()) {
       return ResponseEntity.status(HttpStatus.OK).body(studentList);
     }
-    return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Database is empty right now");
+    //    return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Database is empty right now");
+    // when we are using above statement then the message that we are sending to the output is not
+    // displayed
+    // neither the status the only thing we are able to see is {} so use below method always.
+    return new ResponseEntity<>("No data corresponding to name " + fName, HttpStatus.NOT_FOUND);
   }
 
   @GetMapping("/retrieveAllStudentsByFirstAndLastName/{firstName}/{lastName}")
@@ -155,6 +159,8 @@ public class StudentController {
     if (!studentList.isEmpty()) {
       return ResponseEntity.status(HttpStatus.OK).body(studentList);
     }
-    return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Database is empty right now");
+    return new ResponseEntity<>(
+        "No data corresponding to first and last name " + fName + ", " + lName,
+        HttpStatus.NOT_FOUND);
   }
 }
