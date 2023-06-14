@@ -8,7 +8,9 @@ be able to do all CRUD Operations.
     b> Another method to test the controller -- https://howtodoinjava.com/spring-boot2/testing/rest-controller-unit-test-example/
     
     c> For Service layer testing refer -- https://www.javaguides.net/2022/03/spring-boot-unit-testing-service-layer.html
-    
+
+    c.1> In Service layer if we have @Value then how to set the value in that variable for this follow -- https://roytuts.com/mock-an-autowired-value-field-in-spring-with-junit-mockito/    
+
     d> For Mock and InjectMock -- https://howtodoinjava.com/spring-boot2/testing/spring-boot-mockito-junit-example/
     
     e> For repository layer -- https://www.javaguides.net/2018/09/spring-data-jpa-repository-testing-using-spring-boot-datajpatest.html
