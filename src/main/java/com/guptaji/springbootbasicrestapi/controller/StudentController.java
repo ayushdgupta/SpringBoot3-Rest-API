@@ -26,7 +26,9 @@ public class StudentController {
     // this thread.sleep() I put because I want to see if I hit this API from two places
     // then will another tomcat thread will start to process this request or request2 will wait
     // for the expiration of request1, So what happened here when I hit two request automatically
-    // another thread started for 2nd request (by default by the tomcat)
+    // another thread started for 2nd request (by default by the tomcat). But when I hit three
+    // request at the same time it runs two request in different thread but for third one it waits
+    // for any of the other two to finish and then it starts the third one.
     Thread.sleep(20000);
     List<Student> studentList = studentService.getAllStudentData();
     LOG.info("fetch the data from DB");
