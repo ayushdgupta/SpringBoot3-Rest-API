@@ -21,8 +21,13 @@ public class StudentController {
   @Autowired public StudentService studentService;
 
   @GetMapping
-  public ResponseEntity<?> fetchAllStudents() {
+  public ResponseEntity<?> fetchAllStudents() throws InterruptedException {
     LOG.info("Hit fetchAllStudents API");
+    // this thread.sleep() I put because I want to see if I hit this API from two places
+    // then will another tomcat thread will start to process this request or request2 will wait
+    // for the expiration of request1, So what happened here when I hit two request automatically
+    // another thread started for 2nd request (by default by the tomcat)
+    Thread.sleep(20000);
     List<Student> studentList = studentService.getAllStudentData();
     LOG.info("fetch the data from DB");
 
