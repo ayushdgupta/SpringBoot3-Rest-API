@@ -9,9 +9,9 @@ spring:
     url: jdbc:postgresql://localhost:5432/student_db
     username: postgres
     password: ${db_pass}
-  jpa:
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
+#  jpa:                           Dialect property is optional if we will not provide then spring will
+#    properties:                  automatically detect dialect property.
+#      hibernate:
+#        dialect: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: update

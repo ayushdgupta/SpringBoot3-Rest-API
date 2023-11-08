@@ -1,8 +1,12 @@
 package com.guptaji.springbootbasicrestapi.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.guptaji.springbootbasicrestapi.entity.Student;
+import com.guptaji.springbootbasicrestapi.model.ConfigModel;
 import com.guptaji.springbootbasicrestapi.service.StudentService;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -171,5 +175,14 @@ public class StudentController {
     return new ResponseEntity<>(
         "No data corresponding to first and last name " + fName + ", " + lName,
         HttpStatus.NOT_FOUND);
+  }
+
+  @GetMapping("/readJson")
+  public ResponseEntity<?> readJson() throws IOException {
+    InputStream inputStream = getClass().getResourceAsStream("/configJson/config.json");
+    ObjectMapper objectMapper = new ObjectMapper();
+    ConfigModel configModel = objectMapper.readValue(inputStream, ConfigModel.class);
+    inputStream.close();
+    return ResponseEntity.status(HttpStatus.OK).body(configModel);
   }
 }
