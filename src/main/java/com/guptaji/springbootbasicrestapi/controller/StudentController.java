@@ -2,7 +2,7 @@ package com.guptaji.springbootbasicrestapi.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.guptaji.springbootbasicrestapi.entity.Student;
-import com.guptaji.springbootbasicrestapi.model.ConfigModel;
+import com.guptaji.springbootbasicrestapi.model.ConfigJsonData;
 import com.guptaji.springbootbasicrestapi.service.StudentService;
 
 import java.io.IOException;
@@ -181,8 +181,8 @@ public class StudentController {
   public ResponseEntity<?> readJson() throws IOException {
     InputStream inputStream = getClass().getResourceAsStream("/configJson/config.json");
     ObjectMapper objectMapper = new ObjectMapper();
-    ConfigModel configModel = objectMapper.readValue(inputStream, ConfigModel.class);
+    ConfigJsonData configJsonData = objectMapper.readValue(inputStream, ConfigJsonData.class);
     inputStream.close();
-    return ResponseEntity.status(HttpStatus.OK).body(configModel);
+    return ResponseEntity.status(HttpStatus.OK).body(configJsonData);
   }
 }
